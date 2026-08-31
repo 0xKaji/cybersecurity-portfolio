@@ -1,6 +1,6 @@
 # [Smol | TryHackMe](https://tryhackme.com/room/smol)
 
-Smol is a room that requires exploiting vulnerabilities in a WordPress site, hash cracking and perform privilege escalation to get the flag.
+This security assessment details the full compromise of a Linux server hosting a WordPress application. Initial access was achieved by exploiting a Local File Inclusion (LFI) vulnerability in an outdated plugin, which exposed credentials and revealed a hidden backdoor allowing Remote Code Execution (RCE). Privilege escalation to root was accomplished by cracking database and ZIP file passwords, recovering exposed SSH keys, and abusing misconfigured su and sudo permissions. The attack resulted in complete system and data takeover.
 
 ## Reconnaissance
 
@@ -101,7 +101,30 @@ User xavi is capable of executing any sudo command, so we just sudo su into root
 
 This attack could have been prevented by keeping WordPress and all of its plugins updated, removing unnecessary components, and applying strict input validation to prevent arbitrary code execution. Sensitive information, such as database credentials, SSH keys, configuration files, and backups, should also have been securely stored and protected with appropriate permissions. In addition, applying the principle of least privilege would have prevented unnecessary access between users and restricted unrestricted sudo permissions. Finally, regular vulnerability assessments, password audits, and system monitoring would have helped identify and fix these security weaknesses before they could be exploited.
 
+### MITRE ATT&CK Mapping
 
+Initial Access: [T1190] Exploit Public-Facing Application (jsmol2wp plugin LFI).
+
+
+Execution:
+
+* [T1059.004] Command and Scripting Interpreter: Unix Shell (Reverse shell).
+
+*  [T1505.003] Server Software Component: Web Shell (Hidden 'cmd' parameter in index.php).
+
+Credential Access:
+
+* [T1552.001] Credentials In Files (Reading wp-config.php).
+
+* [T1552.004] Private Keys (Recovering user 'think' SSH key).
+
+* [T1110.002] Password Cracking (JohnTheRipper for DB and ZIP hashes).
+
+Privilege Escalation & Lateral Movement:
+
+* [T1078.003] Valid Accounts: Local Accounts (Pivoting between users).
+
+* [T1548.003] Abuse Elevation Control Mechanism: Sudo and Sudo Caching (Exploiting unrestricted sudo rights).
 
 
 
