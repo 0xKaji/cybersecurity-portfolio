@@ -1,7 +1,6 @@
 # [Attacktive Directory | TryHackMe](https://tryhackme.com/room/attacktivedirectory)
 
-In this article, we will exploit Windows Active Directory via enumeration of running services, abusing Kerberos features and finally, privilege escalation to gather all the challenge's flags.
-
+This report outlines the complete compromise of a Windows Active Directory environment. The engagement began with unauthenticated username enumeration, followed by an AS-REP Roasting attack against accounts lacking Kerberos pre-authentication to secure initial access. Subsequent enumeration of SMB shares uncovered exposed backup credentials. Finally, excessive directory replication privileges assigned to the backup account were exploited via a DCSync attack to dump the domain's NTDS.dit database, enabling full Domain Controller takeover through a Pass-the-Hash attack.
 ## Reconnaissance
 
 The first step was to enumerate all TCP ports and identify the services running on the target machine, to do this we use **Nmap**.
@@ -70,3 +69,26 @@ We found the administrators NTLM hash that we can use in **Evil-WinRM** to acces
 ## Conclusion
 
 The attack could have been prevented by enforcing Kerberos pre-authentication on all applicable accounts, using strong and unique passwords, restricting access to SMB shares, protecting backup credentials and auditing directory-replication permissions. Replication privileges should be assigned only to trusted domain controllers and strictly required accounts.
+
+
+### MITRE ATT&CK Mapping
+
+   Reconnaissance & Discovery:
+
+   * [T1589.002] Gather Victim Identity Information: Usernames (Kerbrute domain enumeration).
+
+   * [T1039] Data from Network Shared Drive (SMB share enumeration for backup credentials).
+
+   Credential Access:
+     
+   * [T1558.004] Steal or Forge Kerberos Tickets: AS-REP Roasting (Extracting KDC hashes with GetNPUsers).
+
+   * [T1110.002] Password Cracking (Offline cracking of AS-REP tickets via Hashcat).
+
+   * [T1003.006] OS Credential Dumping: DCSync (NTDS.dit extraction using Secretsdump).
+
+   Lateral Movement & Execution:
+
+   * [T1550.002] Use Alternate Authentication Material: Pass the Hash (Authenticating with the Administrator NTLM hash).
+
+   * [T1021.006] Remote Services: Windows Remote Management (Executing remote sessions with Evil-WinRM).
