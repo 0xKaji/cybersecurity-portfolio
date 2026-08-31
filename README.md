@@ -10,8 +10,8 @@ My goal is to showcase hands-on competencies in vulnerability assessment, offens
 
 | Platform / Category | Machine / Project | Key Techniques & Vulnerabilities | Report |
 | :--- | :--- | :--- | :--- |
-| **Windows / AD** | [Attacktive Directory](https://tryhackme.com/room/attacktivedirectory) | Kerbrute, AS-REP Roasting, SMB Enumeration, DCSync, Pass-the-Hash | [View Report](./reports/attacktivedirectory.md) |
-| **Linux / Web** | [Smol](https://tryhackme.com/room/smol) | LFI, Web Shell, Password Cracking, Sudo/Su Abuse | [View Report](./reports/smol.md) |
+| **Windows / AD** | [Attacktive Directory](https://tryhackme.com/room/attacktivedirectory) | Kerbrute, AS-REP Roasting, SMB Enumeration, DCSync, Pass-the-Hash | [View Report](tryhackme/attacktiveDirectory.md) |
+| **Linux / Web** | [Smol](https://tryhackme.com/room/smol) | LFI, Web Shell, Password Cracking, Sudo/Su Abuse | [View Report](tryhackme/smol.md) |
 | *Coming Soon* | *Machine Name* | *TBD* | *Coming Soon* |
 
 ---
