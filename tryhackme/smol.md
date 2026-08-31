@@ -81,7 +81,7 @@ Now, using **LinPeas** we find that su is configured so that the user think can 
 
 <img width="579" height="177" alt="Captura de pantalla_20" src="https://github.com/user-attachments/assets/bcfd3dfb-18f8-4f65-940d-38638d967b64" />
 
-Inside gege's home directory there is a zip file that looks promising, a WordPress backup. As it is protected by a password, we will need to once again crack it using **JTR**. So i download it in my host machine.
+Inside gege's home directory there is a zip file that looks promising, a WordPress backup. Since it is protected by a password, we will need to once again crack it using **JTR**. So i download it in my host machine.
 
 <img width="1229" height="219" alt="Captura de pantalla_22" src="https://github.com/user-attachments/assets/34100f94-5ec1-42c7-965c-b91aba56bed6" />
 <img width="261" height="44" alt="Captura de pantalla_23" src="https://github.com/user-attachments/assets/3d03a806-540d-49a1-8fa2-7d4c2aec515e" />
