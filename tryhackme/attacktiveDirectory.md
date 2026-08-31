@@ -11,6 +11,7 @@ The first step was to enumerate all TCP ports and identify the services running 
 The scan revealed several Windows-related services. Upon further examination, port 3389 (RDP) revealed Windows host and domain information:
   * NetBIOS_Domain_Name: THM-AD
   * DNS_Domain_Name: spookysec.local
+
 These findings confirmed that the target belonged to a Windows Active Directory environment and provided useful domain information for the next enumeration steps.
 
 Windows AD uses Kerberos as an authentication service running on port 88. 
