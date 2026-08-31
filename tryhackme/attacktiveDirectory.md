@@ -4,7 +4,7 @@ In this article, we will exploit Windows Active Directory via enumeration of run
 
 ## Reconnaissance
 
-The first step was to enumerate all TCP ports and identify the services running on the target machine, to do this we use **nmap**.
+The first step was to enumerate all TCP ports and identify the services running on the target machine, to do this we use **Nmap**.
 
 <img width="557" height="593" alt="Captura de pantalla_2" src="https://github.com/user-attachments/assets/6370201e-8c3a-4aad-850e-aa486a2d6161" />
 
