@@ -5,24 +5,24 @@ This security assessment details the full compromise of a Linux server hosting a
 ## Reconnaissance
 
 Firstly, we execute **Nmap** to discover services running on the target machine.
+We find a ssh service and an Apache http server that redirects us to www.smol.thm. For ease, we add that url to /etc/hosts. 
 
-<img width="817" height="509" alt="Captura de pantalla_2" src="https://github.com/user-attachments/assets/fcfd8489-b277-44c4-85ac-b7a50ed7cc55" />
-
-We find a ssh service and an Apache http server that redirects us to www.smol.thm. For ease, we add that url to /etc/hosts.
-
-<img width="1256" height="79" alt="Captura de pantalla_3" src="https://github.com/user-attachments/assets/b3a324ec-d8f7-4f76-8e08-b3e864d7955d" />
+<img width="817" height="509" alt="Captura de pantalla_2" src="https://github.com/user-attachments/assets/fcfd8489-b277-44c4-85ac-b7a50ed7cc55" />\
+<br>
 
 **WhatWeb** reports that the website is running a WordPress service. That WordPress version doesn't seem to be vulnerable, but there may be vulnerable plugins installed.
+<img width="1256" height="79" alt="Captura de pantalla_3" src="https://github.com/user-attachments/assets/b3a324ec-d8f7-4f76-8e08-b3e864d7955d" />
 
 <img width="1263" height="93" alt="Captura de pantalla_4" src="https://github.com/user-attachments/assets/a049021a-6697-4028-aa1d-a1885cbf1792" />
 
 The scan shows that the plugin jsmol2wp is installed. This plugin is known for having a Local File Inclusion vulnerability.
 
 > WordPress JSmol2WP plugin 1.07 is susceptible to local file inclusion via ../ directory traversal in query=php://filter/resource= in the jsmol.php query string. An attacker can possibly obtain sensitive information, modify data, and/or execute unauthorized administrative operations in the context of the affected site. This can also be exploited for server-side request forgery. [PoC](https://github.com/sullo/advisory-archives/blob/master/wordpress-jsmol2wp-CVE-2018-20463-CVE-2018-20462.txt)
-
-<img width="577" height="136" alt="Captura de pantalla_5" src="https://github.com/user-attachments/assets/24cd0f56-767d-441f-9df3-791edae54739" />
+<br>
 
 Inside wp_config.php we find a WordPress user's credentials. With them, we can access the admin panel for WP.
+
+<img width="577" height="136" alt="Captura de pantalla_5" src="https://github.com/user-attachments/assets/24cd0f56-767d-441f-9df3-791edae54739" />
 
 <img width="1086" height="760" alt="Captura de pantalla_6" src="https://github.com/user-attachments/assets/bedeaa6f-06c2-4a64-aa97-a43d44d8c6c6" />
 
@@ -30,12 +30,15 @@ Inside wp_config.php we find a WordPress user's credentials. With them, we can a
 
 Sortly after, I found out the user didn't have any meaningful permissions, so i couldn't execute some powerful [scripts](https://github.com/nowak0x01/WPXStrike)
 
-<img width="1149" height="302" alt="Captura de pantalla_7" src="https://github.com/user-attachments/assets/8b8431be-40b2-4041-88ef-8ef7b47028fe" />
+<img width="1149" height="302" alt="Captura de pantalla_7" src="https://github.com/user-attachments/assets/8b8431be-40b2-4041-88ef-8ef7b47028fe" />\
+<br>
 
 But, looking through the dashboard we can find a private page with some interesting tasks.
 
 <img width="1149" height="447" alt="Captura de pantalla_8" src="https://github.com/user-attachments/assets/8450e416-65b5-4675-a88d-8d2e067f7e0f" />
-<img width="806" height="235" alt="Captura de pantalla_9" src="https://github.com/user-attachments/assets/244f5d2c-dbf7-4e61-8859-7a9c3c4d5fb4" />
+
+<img width="806" height="235" alt="Captura de pantalla_9" src="https://github.com/user-attachments/assets/244f5d2c-dbf7-4e61-8859-7a9c3c4d5fb4" />\
+<br>
 
 Now we know that the plugin Hello Dolly is installed alongside jsmol2wp. We can use the previous found LFI to examine this new plugins source code.
 
@@ -65,7 +68,8 @@ Since we are inside the WordPress server we can find inside it's database all th
 
 One of this passwords can be cracked using **JohnTheRipper** and rockyou. 
 
-<img width="807" height="308" alt="Captura de pantalla_18" src="https://github.com/user-attachments/assets/c1c24628-f6fc-46df-8a9f-4b4e5acca349" />
+<img width="807" height="308" alt="Captura de pantalla_18" src="https://github.com/user-attachments/assets/c1c24628-f6fc-46df-8a9f-4b4e5acca349" />\
+<br>
 
 This password belongs to the user diego. Inside his home directory we can find the user flag.
 
@@ -85,9 +89,12 @@ Inside gege's home directory there is a zip file that looks promising, a WordPre
 
 <img width="1229" height="219" alt="Captura de pantalla_22" src="https://github.com/user-attachments/assets/34100f94-5ec1-42c7-965c-b91aba56bed6" />
 <img width="261" height="44" alt="Captura de pantalla_23" src="https://github.com/user-attachments/assets/3d03a806-540d-49a1-8fa2-7d4c2aec515e" />
-<img width="732" height="172" alt="Captura de pantalla_24" src="https://github.com/user-attachments/assets/c0a67785-3d2c-427b-be59-15dabb975440" />
+
+<img width="732" height="172" alt="Captura de pantalla_24" src="https://github.com/user-attachments/assets/c0a67785-3d2c-427b-be59-15dabb975440" />\
+<br>
 
 Once we find the password, we unzip the file. Inside wp-config, we can find once again some user credentials. This time belonging to user xavi.
+
 <img width="662" height="496" alt="Captura de pantalla_25" src="https://github.com/user-attachments/assets/1b6531c7-67ba-4130-a736-0fb2e84ce578" />
 
 User xavi is capable of executing any sudo command, so we just sudo su into root.
