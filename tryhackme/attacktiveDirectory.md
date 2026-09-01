@@ -5,7 +5,8 @@ This report outlines the complete compromise of a Windows Active Directory envir
 
 The first step was to enumerate all TCP ports and identify the services running on the target machine, to do this we use **Nmap**.
 
-<img width="557" height="593" alt="Captura de pantalla_2" src="https://github.com/user-attachments/assets/6370201e-8c3a-4aad-850e-aa486a2d6161" />
+<img width="557" height="593" alt="Captura de pantalla_2" src="https://github.com/user-attachments/assets/6370201e-8c3a-4aad-850e-aa486a2d6161" />\
+<br>
 
 The scan revealed several Windows-related services. Upon further examination, port 3389 (RDP) revealed Windows host and domain information:
   * NetBIOS_Domain_Name: THM-AD
@@ -14,9 +15,11 @@ The scan revealed several Windows-related services. Upon further examination, po
 These findings confirmed that the target belonged to a Windows Active Directory environment and provided useful domain information for the next enumeration steps.
 
 Windows AD uses Kerberos as an authentication service running on port 88. 
-We used **Kerbrute** to perform Kerberos-based username enumeration. By observing the KDC’s responses to authentication requests, we can identify valid domain usernames without authenticating successfully. A user wordlist is provided by the creator for user enumeration.
+We used **Kerbrute** to perform Kerberos-based username enumeration. By observing the KDC’s responses to authentication requests, we can identify valid domain usernames without authenticating successfully. A user wordlist is provided by the creator for user enumeration. \
+<br>
 
-<img width="708" height="437" alt="Captura de pantalla_4" src="https://github.com/user-attachments/assets/ec431e46-f8b3-484e-a6ba-194ebaa93fc6" />
+<img width="708" height="437" alt="Captura de pantalla_4" src="https://github.com/user-attachments/assets/ec431e46-f8b3-484e-a6ba-194ebaa93fc6" />\
+<br>
 
 We have discovered multiple accounts, notably a service admin account and a backup account.
 
@@ -28,7 +31,8 @@ Using that information we can attempt to exploit Kerberos with an attack method 
 
 We will use one of Impacket's tools called GetNPUsers.py, this script allows us to query ASREPRoastable accounts from the Key Distribution Center.
 
-<img width="1373" height="263" alt="Captura de pantalla_5" src="https://github.com/user-attachments/assets/6052b91b-d9a7-4206-a330-337b531e50b4" />
+<img width="1373" height="263" alt="Captura de pantalla_5" src="https://github.com/user-attachments/assets/6052b91b-d9a7-4206-a330-337b531e50b4" />\
+<br>
 
 Next, we use **Hashcat** to crack the “Kerberos 5 AS-REP etype 23” hash retrieved from the KDC.
 
@@ -42,7 +46,8 @@ Now we have a set of credentials we can use to enumerate any shares in the domai
 
 <img width="981" height="231" alt="Captura de pantalla_8" src="https://github.com/user-attachments/assets/f1263feb-655f-4236-a30b-8a4ac2039d66" />
 
-<img width="403" height="118" alt="Captura de pantalla_9" src="https://github.com/user-attachments/assets/2d3fb58d-9e6e-4156-8075-c1cbca491959" />
+<img width="403" height="118" alt="Captura de pantalla_9" src="https://github.com/user-attachments/assets/2d3fb58d-9e6e-4156-8075-c1cbca491959" />\
+<br>
 
 We discover a set of encoded backup credentials in the SMB share belonging to the backup user account.
 
@@ -55,11 +60,14 @@ The “secretsdump.py” uses the DRSUAPI method to get NTDS.DIT secrets.
 
 > The Ntds. dit file is a database that stores Active Directory data, including information about user objects, groups and group membership. Importantly, the file also stores the password hashes for all users in the domain.
 
-<img width="1078" height="568" alt="Captura de pantalla_10" src="https://github.com/user-attachments/assets/f99fa25e-483c-40ec-8f9d-2ab8649f7575" />
+<img width="1078" height="568" alt="Captura de pantalla_10" src="https://github.com/user-attachments/assets/f99fa25e-483c-40ec-8f9d-2ab8649f7575" />\
+<br>
 
 We found the administrators NTLM hash that we can use in **Evil-WinRM** to access the target machine using the Pass The Hash attack.
 
 > Pass the Hash attack is a technique whereby an attacker captures a password hash (as opposed to the password characters) and then simply passes it through for authentication and potentially lateral access to other networked systems.
+\
+<br>
 
 <img width="1036" height="162" alt="Captura de pantalla_11" src="https://github.com/user-attachments/assets/a2a34f2e-21ca-4aa2-995d-2b3b849a3933" />
 
