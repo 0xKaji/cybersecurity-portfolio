@@ -4,7 +4,7 @@ This security assessment details the full compromise of a Linux server hosting a
 
 ## Recon
 
-The first step is to identify which TCP ports are open on the target machine. An **Nmap** scan was performed against the host to scan all TCP ports and identify the services and versions running on them.****
+The first step is to identify which TCP ports are open on the target machine. An **Nmap** scan was performed against the host to scan all TCP ports and identify the services and versions running on them.
 
 <img width="688" height="778" alt="Captura de pantalla_10" src="https://github.com/user-attachments/assets/b2ad4810-be80-4910-8d83-5e235b91a864" />
 
@@ -28,11 +28,11 @@ The discovery of the /joomla directory provides the main application path for fu
 
 <img width="858" height="519" alt="Captura de pantalla_16" src="https://github.com/user-attachments/assets/cfd3d95f-72c8-42b3-ac3e-13e0b31ced56" />
 
-As we dont have any credentials we can't access the administration panel. We will need to find them or find another route.
+Since we do not have valid credentials, we cannot access the administration panel. We will need to find them or identify another way to gain access.
 
 <img width="861" height="705" alt="Captura de pantalla_17" src="https://github.com/user-attachments/assets/93ac94c3-0f70-4249-8071-518091d4dd3d" />
 
-This Joomla version does not appear to be vulnerable. Since we do not have valid credentials, we cannot access the administration panel. We will need to find them or identify another way to gain access.
+No exploitable vulnerability was identified in the Joomla version during the assessment.
 
 <img width="786" height="745" alt="Captura de pantalla_18" src="https://github.com/user-attachments/assets/45d1e46c-6084-4a1d-820a-6ab84c396704" />
 
@@ -82,13 +82,17 @@ Fortunately, for us [GTFOBins](https://gtfobins.org/) provides a straightforward
 
 <img width="523" height="147" alt="Captura de pantalla_29" src="https://github.com/user-attachments/assets/8fcc95ac-7129-494f-9a05-022f851659b9" />
 
+## Conclusion
+
+The compromise could have been prevented by patching or removing the vulnerable sar2html application and restricting access to sensitive directories such as /_test. In addition, anonymous FTP access should have been disabled and unnecessary files removed from the server. Credentials should never have been stored in plaintext in log files or backup scripts, while SSH should have been protected with strong credentials and key-based authentication. Finally, unnecessary membership in the lxd group should have been removed, and the SUID permission on the find binary should have been disabled and regularly audited.
+
+### MITRE ATT&CK Mapping
+
 Reconnaissance & Discovery:
 
   * [T1046] Network Service Scanning (Identifying open FTP, SSH, and HTTP services through Nmap).
-
+    
   * [T1083] File and Directory Discovery (Enumerating web directories and discovering /joomla and /_test/sar2html with Gobuster).
-
-  * [T1069.001] Permission Groups Discovery: Local Groups (Identifying that user stoner belonged to the lxd group).
 
 Initial Access:
 
@@ -98,15 +102,13 @@ Execution:
 
   * [T1059.004] Command and Scripting Interpreter: Unix Shell (Executing commands through the obtained reverse shell).
 
-  * [T1059.004] Command and Scripting Interpreter: Unix Shell (Using a shell to execute the payload and establish a reverse connection).
-
 Credential Access:
 
   * [T1552.001] Unsecured Credentials: Credentials In Files (Recovering basterd’s password from log.txt).
 
   * [T1552.001] Unsecured Credentials: Credentials In Files (Recovering stoner’s password from a backup script).
 
-  * [T1140] Deobfuscate/Decode Files or Information (Decoding the ROT13 message retrieved through anonymous FTP).
+  * T1140] Deobfuscate/Decode Files or Information (Decoding the ROT13 message retrieved through anonymous FTP).
 
 Lateral Movement & Account Access:
 
@@ -118,6 +120,5 @@ Privilege Escalation:
 
   * [T1548.001] Abuse Elevation Control Mechanism: Setuid and Setgid (Abusing the SUID permission configured on the find binary).
 
-  * [T1068] Exploitation for Privilege Escalation (Exploiting the insecure SUID configuration to obtain a root shell).
 
 The lxd group membership represented an alternative potential escalation path, but it was not used in the final compromise.
