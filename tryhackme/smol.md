@@ -28,7 +28,7 @@ Inside wp_config.php we find a WordPress user's credentials. With them, we can a
 
 ## Initial access
 
-Sortly after, I found out the user didn't have any meaningful permissions, so i couldn't execute some powerful [scripts](https://github.com/nowak0x01/WPXStrike)
+Shortly after, I found out the user didn't have any meaningful permissions, so i couldn't execute some powerful [scripts](https://github.com/nowak0x01/WPXStrike)
 
 <img width="1149" height="302" alt="Captura de pantalla_7" src="https://github.com/user-attachments/assets/8b8431be-40b2-4041-88ef-8ef7b47028fe" />\
 <br>
