@@ -108,7 +108,7 @@ Credential Access:
 
   * [T1552.001] Unsecured Credentials: Credentials In Files (Recovering stoner’s password from a backup script).
 
-  * T1140] Deobfuscate/Decode Files or Information (Decoding the ROT13 message retrieved through anonymous FTP).
+  * [T1140] Deobfuscate/Decode Files or Information (Decoding the ROT13 message retrieved through anonymous FTP).
 
 Lateral Movement & Account Access:
 
