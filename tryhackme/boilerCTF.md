@@ -1,5 +1,7 @@
 # [Boiler CTF | TryHackMe](https://tryhackme.com/room/boilerctf2)
 
+This security assessment details the full compromise of a Linux server hosting a Joomla application. Initial access was achieved by exploiting a Remote Code Execution (RCE) vulnerability in the exposed sar2html application. During post-exploitation, plaintext credentials were recovered from log and backup files, allowing access to additional local accounts. Privilege escalation to root was accomplished by abusing a misconfigured SUID-enabled find binary. The attack resulted in complete system compromise and root-level access.
+
 ## Recon
 
 The first step is to identify which TCP ports are open on the target machine. An **Nmap** scan was performed against the host to scan all TCP ports and identify the services and versions running on them.****
@@ -80,3 +82,42 @@ Fortunately, for us [GTFOBins](https://gtfobins.org/) provides a straightforward
 
 <img width="523" height="147" alt="Captura de pantalla_29" src="https://github.com/user-attachments/assets/8fcc95ac-7129-494f-9a05-022f851659b9" />
 
+Reconnaissance & Discovery:
+
+  * [T1046] Network Service Scanning (Identifying open FTP, SSH, and HTTP services through Nmap).
+
+  * [T1083] File and Directory Discovery (Enumerating web directories and discovering /joomla and /_test/sar2html with Gobuster).
+
+  * [T1069.001] Permission Groups Discovery: Local Groups (Identifying that user stoner belonged to the lxd group).
+
+Initial Access:
+
+  * [T1190] Exploit Public-Facing Application (Exploiting the sar2html RCE vulnerability exposed through the web server).
+
+Execution:
+
+  * [T1059.004] Command and Scripting Interpreter: Unix Shell (Executing commands through the obtained reverse shell).
+
+  * [T1059.004] Command and Scripting Interpreter: Unix Shell (Using a shell to execute the payload and establish a reverse connection).
+
+Credential Access:
+
+  * [T1552.001] Unsecured Credentials: Credentials In Files (Recovering basterd’s password from log.txt).
+
+  * [T1552.001] Unsecured Credentials: Credentials In Files (Recovering stoner’s password from a backup script).
+
+  * [T1140] Deobfuscate/Decode Files or Information (Decoding the ROT13 message retrieved through anonymous FTP).
+
+Lateral Movement & Account Access:
+
+  * [T1021.004] Remote Services: SSH (Using recovered credentials to connect to the server through SSH).
+
+  * [T1078.003] Valid Accounts: Local Accounts (Using valid local credentials to move from basterd to stoner).
+
+Privilege Escalation:
+
+  * [T1548.001] Abuse Elevation Control Mechanism: Setuid and Setgid (Abusing the SUID permission configured on the find binary).
+
+  * [T1068] Exploitation for Privilege Escalation (Exploiting the insecure SUID configuration to obtain a root shell).
+
+The lxd group membership represented an alternative potential escalation path, but it was not used in the final compromise.
