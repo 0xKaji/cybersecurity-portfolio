@@ -12,6 +12,7 @@ My goal is to showcase hands-on competencies in vulnerability assessment, offens
 | :--- | :--- | :--- | :--- |
 | **Windows / AD** | [Attacktive Directory](https://tryhackme.com/room/attacktivedirectory) | Kerbrute, AS-REP Roasting, SMB Enumeration, DCSync, Pass-the-Hash | [View Report](tryhackme/attacktiveDirectory.md) |
 | **Linux / Web** | [Smol](https://tryhackme.com/room/smol) | LFI, Web Shell, Password Cracking, Sudo/Su Abuse | [View Report](tryhackme/smol.md) |
+| **Linux / Web** | [Boiler CTF](https://tryhackme.com/room/boilerctf2) | Anonymous FTP, ROT13, Gobuster, sar2html RCE, SUID binary | [View Report](tryhackme/boilerCTF.md) |
 | *Coming Soon* | *Machine Name* | *TBD* | *Coming Soon* |
 
 ---
